@@ -1,15 +1,16 @@
-import os
 import sqlite3
 
-# Nom de votre base de données
-nom_base_de_donnees = 'films.db'
 
-# Obtenez le chemin absolu du répertoire contenant votre script Python
-chemin_script = os.path.dirname(os.path.abspath(__file__))
+def create_database():
+    conn = sqlite3.connect('FilmPortal.db')
+    cursor = conn.cursor()
 
-# Chemin absolu vers la base de données
-chemin_absolu_base_de_donnees = os.path.join(chemin_script, nom_base_de_donnees)
+    with open('FilmPortal.sql', 'r') as sql_file:
+        sql_script = sql_file.read()
 
-# Connexion à la base de données en spécifiant le chemin absolu
-conn = sqlite3.connect(chemin_absolu_base_de_donnees)
-cursor = conn.cursor()
+    cursor.executescript(sql_script)
+    conn.commit()
+    conn.close()
+
+
+create_database()
